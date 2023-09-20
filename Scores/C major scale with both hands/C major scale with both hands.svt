@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sonic-visualiser>
+<sv>
+<data>
+  <model id="1" name="placeholder" sampleRate="48000" type="wavefile" file=":samples/silent.wav" mainModel="true"/>
+  <playparameters mute="false" pan="0" gain="1" clipId="" model="1">
+  </playparameters>
+  <derivation type="transform" source="1" model="2" channel="-1" domain="1" stepSize="768" blockSize="6144" windowType="3" transform="vamp:score-aligner:pianoaligner:testingpowerspectrum">
+    <transform
+    id="vamp:score-aligner:pianoaligner:testingpowerspectrum"
+    pluginVersion="1"
+    program="C major scale with both hands"
+    stepSize="768"
+    blockSize="6144"
+    windowType="hanning"
+    startTime="0.000000000"
+    duration="0.000000000"
+    sampleRate="0">
+      <parameter name="parameter" value="5"/>
+    </transform>
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="C major scale with both hands" param-parameter="5" />
+  </derivation>
+  <model id="4" name="C_scale_bothHands.wav: Chord Onsets" sampleRate="48000" start="154368" end="650496" type="sparse" dimensions="2" resolution="768" notifyOnAdd="true" dataset="3" minimum="0" maximum="7000" units="" />
+  <dataset id="3" dimensions="2">
+    <point frame="154368" value="0" label="1+0/1" />
+    <point frame="165120" value="250" label="1+1/8" />
+    <point frame="185088" value="500" label="1+1/4" />
+    <point frame="205056" value="750" label="1+3/8" />
+    <point frame="225792" value="1000" label="1+1/2" />
+    <point frame="238080" value="1250" label="1+5/8" />
+    <point frame="268032" value="1500" label="1+3/4" />
+    <point frame="284928" value="1750" label="1+7/8" />
+    <point frame="301824" value="2000" label="2+0/1" />
+    <point frame="316416" value="2250" label="2+1/8" />
+    <point frame="331776" value="2500" label="2+1/4" />
+    <point frame="345600" value="2750" label="2+3/8" />
+    <point frame="359424" value="3000" label="2+1/2" />
+    <point frame="377088" value="3250" label="2+5/8" />
+    <point frame="391680" value="3500" label="2+3/4" />
+    <point frame="406272" value="3750" label="2+7/8" />
+    <point frame="419328" value="4000" label="3+0/1" />
+    <point frame="432384" value="4250" label="3+1/8" />
+    <point frame="443904" value="4500" label="3+1/4" />
+    <point frame="460032" value="4750" label="3+3/8" />
+    <point frame="480000" value="5000" label="3+1/2" />
+    <point frame="505344" value="5250" label="3+5/8" />
+    <point frame="558336" value="5500" label="3+3/4" />
+    <point frame="572928" value="5750" label="3+7/8" />
+    <point frame="585984" value="6000" label="4+0/1" />
+    <point frame="608256" value="6250" label="4+1/8" />
+    <point frame="622848" value="6500" label="4+1/4" />
+    <point frame="637440" value="6750" label="4+3/8" />
+    <point frame="649728" value="7000" label="4+1/2" />
+  </dataset>
+  <derivation type="transform" source="1" model="4" channel="-1" domain="1" stepSize="768" blockSize="6144" windowType="3" transform="vamp:score-aligner:pianoaligner:chordonsets">
+    <transform
+    id="vamp:score-aligner:pianoaligner:chordonsets"
+    pluginVersion="1"
+    program="C major scale with both hands"
+    stepSize="768"
+    blockSize="6144"
+    windowType="hanning"
+    startTime="0.000000000"
+    duration="0.000000000"
+    sampleRate="0">
+      <parameter name="parameter" value="5"/>
+    </transform>
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="C major scale with both hands" param-parameter="5" />
+  </derivation>
+  <playparameters mute="true" pan="0" gain="1" clipId="" model="4">
+  </playparameters>
+  <model id="6" name="C_scale_bothHands.wav: Event Tempo" sampleRate="48000" start="154368" end="638208" type="sparse" dimensions="2" resolution="768" notifyOnAdd="true" dataset="5" minimum="1.44928" maximum="7.14286" units="" />
+  <dataset id="5" dimensions="2">
+    <point frame="154368" value="7.14286" label="" />
+    <point frame="165120" value="3.84615" label="" />
+    <point frame="185088" value="3.84615" label="" />
+    <point frame="205056" value="3.7037" label="" />
+    <point frame="225792" value="6.25" label="" />
+    <point frame="238080" value="2.5641" label="" />
+    <point frame="268032" value="4.54545" label="" />
+    <point frame="284928" value="4.54545" label="" />
+    <point frame="301824" value="5.26316" label="" />
+    <point frame="316416" value="5" label="" />
+    <point frame="331776" value="5.55556" label="" />
+    <point frame="345600" value="5.55556" label="" />
+    <point frame="359424" value="4.34783" label="" />
+    <point frame="377088" value="5.26316" label="" />
+    <point frame="391680" value="5.26316" label="" />
+    <point frame="406272" value="5.88235" label="" />
+    <point frame="419328" value="5.88235" label="" />
+    <point frame="432384" value="6.66667" label="" />
+    <point frame="443904" value="4.7619" label="" />
+    <point frame="460032" value="3.84615" label="" />
+    <point frame="480000" value="3.0303" label="" />
+    <point frame="505344" value="1.44928" label="" />
+    <point frame="558336" value="5.26316" label="" />
+    <point frame="572928" value="5.88235" label="" />
+    <point frame="585984" value="3.44828" label="" />
+    <point frame="608256" value="5.26316" label="" />
+    <point frame="622848" value="5.26316" label="" />
+    <point frame="637440" value="6.25" label="" />
+  </dataset>
+  <derivation type="transform" source="1" model="6" channel="-1" domain="1" stepSize="768" blockSize="6144" windowType="3" transform="vamp:score-aligner:pianoaligner:eventtempo">
+    <transform
+    id="vamp:score-aligner:pianoaligner:eventtempo"
+    pluginVersion="1"
+    program="C major scale with both hands"
+    stepSize="768"
+    blockSize="6144"
+    windowType="hanning"
+    startTime="0.000000000"
+    duration="0.000000000"
+    sampleRate="0">
+      <parameter name="parameter" value="5"/>
+    </transform>
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="C major scale with both hands" param-parameter="5" />
+  </derivation>
+  <playparameters mute="true" pan="0" gain="1" clipId="" model="6">
+  </playparameters>
+  <layer id="7" type="timeruler" name="Ruler" model="1"  colourName="Black" colour="#000000" darkBackground="false" />
+  <layer id="8" type="waveform" name="Waveform" model="1"  gain="1" showMeans="1" greyscale="1" channelMode="0" channel="-1" scale="0" middleLineHeight="0.5" aggressive="0" autoNormalize="0" colourName="Blue" colour="#000080" darkBackground="false" />
+  <layer id="9" type="colour3dplot" name="Testing Power Spectrum" model="2"  scale="0" minY="0" maxY="0" invertVertical="false" opaque="false" binScale="0" smooth="false" gain="1" colourMap="Green" colourScheme="0" columnNormalization="none" normalizeColumns="false" normalizeVisibleArea="false" />
+  <layer id="0" type="timevalues" name="Chord Onsets" model="4"  plotStyle="5" verticalScale="0" scaleMinimum="0" scaleMaximum="0" drawDivisions="true" fillSegments="false" derivative="false" fillColourMap="White on Black" colourMap="2"  colourName="Bright Green" colour="#14ff5a" darkBackground="true" />
+  <layer id="10" type="timeruler" name="Ruler &lt;2&gt;" model="1"  colourName="Black" colour="#000000" darkBackground="false" />
+  <layer id="11" type="timevalues" name="Event Tempo" model="6"  plotStyle="3" verticalScale="0" scaleMinimum="0" scaleMaximum="0" drawDivisions="true" fillSegments="true" derivative="false" fillColourMap="Green" colourMap="0"  colourName="Bright Green" colour="#14ff5a" darkBackground="true" />
+</data>
+<display>
+  <window width="1440" height="766"/>
+  <view centre="339968" zoom="1024" deepZoom="1" followPan="1" followZoom="1" tracking="page"  type="pane" centreLineVisible="1" height="304" >
+    <layer id="7" type="timeruler" name="Ruler" model="1" visible="true"/>
+    <layer id="8" type="waveform" name="Waveform" model="1" visible="true"/>
+    <layer id="9" type="colour3dplot" name="Testing Power Spectrum" model="2" visible="true"/>
+    <layer id="0" type="timevalues" name="Chord Onsets" model="4" visible="true"/>
+  </view>
+  <view centre="339968" zoom="1024" deepZoom="1" followPan="1" followZoom="1" tracking="page"  type="pane" centreLineVisible="1" height="304" >
+    <layer id="10" type="timeruler" name="Ruler &lt;2&gt;" model="1" visible="true"/>
+    <layer id="11" type="timevalues" name="Event Tempo" model="6" visible="true"/>
+  </view>
+</display>
+<selections >
+</selections>
+</sv>
