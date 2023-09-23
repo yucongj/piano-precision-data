@@ -1,0 +1,14 @@
+Grave	35
+Largo	50
+Lento	52.5
+Larghetto	63
+Adagio	71
+Andante	92
+Andantino	94
+Moderato	114
+Allegretto	116
+Allegro moderato	118
+Allegro	144
+Vivace	172
+Presto	187
+Prestissimo	200

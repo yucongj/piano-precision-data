@@ -66,11 +66,12 @@ def get_meters_from_xml(xml):
     return time_signatures
 
 
-def get_tempos_from_xml(xml):
+def get_tempos_from_xml(xml, defined_tempo):
     """
-    Returns the metronome marks found in the score (by looking at only one part).
+    Returns the metronome marks / tempo texts found in the score.
+    Note: It looks at only one part, which might not be sufficient.
     
-    xml -> a list of tuples: [(MetronomeMark1, measure1), (MetronomeMark2, measure2), ...]
+    xml, dic -> a list of tuples: [(MetronomeMark1, measure1), (MetronomeMark2, measure2), ...]
     """
     tempos = []
     if (len(xml.parts) == 0):
@@ -83,8 +84,11 @@ def get_tempos_from_xml(xml):
         for obj in measure:
             if type(obj) == m21.tempo.MetronomeMark:
                tempos.append((obj, measure))
-            #if type(obj) == m21.expressions.TextExpression:
-               #tempos.append((obj, measure))
+            if type(obj) == m21.expressions.TextExpression:
+                if obj.content in defined_tempo:
+                    tempos.append((obj, measure))
+                if obj.content == "a tempo":
+                    print((obj, measure))
     return tempos
 
 
@@ -208,8 +212,8 @@ def construct_lines_of_solo(notes, meters):
 #name = "C major scale with both hands"
 #name = "Chopin_-_Raindrop_Prelude"
 #name = "Chord Etude"
-#name = "Debussy_Prelude_Bk_1_No_3_Le_Vent_dans_la_plaine"
-name = "JSBach_No._1_in_C_Major,_BWV_846_Fugue"
+name = "Debussy_Prelude_Bk_1_No_3_Le_Vent_dans_la_plaine"
+#name = "JSBach_No._1_in_C_Major,_BWV_846_Fugue"
 #name = "Rachmaninov_Etude-Tableau_op._39_no._6"
 #name = "Sonata_No._18_Mvt_2_Mozart"
 #name = "Sonate_No._14_Moonlight_1st_Movement"
@@ -225,12 +229,19 @@ meter_path = path + name + "/" + name + ".meter"
 tempo_path = path + name + "/" + name + ".tempo"
 output_path = path + name + "/" + name + ".solo"
 
+########### Read defined tempo values
+defined_tempo_values = {}
+with open('TextTempoValue.txt') as file:
+    for line in file.readlines():
+        pair = line.split('\t')
+        defined_tempo_values[pair[0]] = pair[1].strip()
+
 ########### Read MusicXML file
 
 xml_data = read_musicXML_file(xml_path)
 # xml_data.show("text")
 meters = get_meters_from_xml(xml_data)
-tempos = get_tempos_from_xml(xml_data)
+tempos = get_tempos_from_xml(xml_data, defined_tempo_values)
 
 ########### Write to METER file
 
@@ -249,12 +260,18 @@ for tempo in tempos:
     meter = find_meter_of_measure(measure, meters)[0]
     beat_length = Fraction(1, meter.denominator)
     position = Fraction((marking.beat-1) * beat_length)
-    if (marking.numberImplicit):
-        print("WARNING in writing .tempo: numberImplicit is True!")
-    print(str(measure) + "+" + str(position.numerator) + '/'+ str(position.denominator),
-          marking.number, marking.referent.quarterLength)
-    file.write(str(measure)+ "+" + str(position.numerator) + '/'+ str(position.denominator)+
-               "\t"+str(marking.number)+"\t"+str(marking.referent.quarterLength)+"\n")
+    if type(marking) == m21.tempo.MetronomeMark:
+        #if (marking.numberImplicit):
+            #print("WARNING in writing .tempo: numberImplicit is True!")
+        print(str(measure) + "+" + str(position.numerator) + '/'+ str(position.denominator),
+              marking.number, marking.referent.quarterLength)
+        file.write(str(measure)+ "+" + str(position.numerator) + '/'+ str(position.denominator)+
+                   "\t"+str(marking.number)+"\t"+str(marking.referent.quarterLength)+"\n")
+    if type(marking) == m21.expressions.TextExpression:
+        print(str(measure) + "+" + str(position.numerator) + '/'+ str(position.denominator),
+              float(defined_tempo_values[marking.content]), beat_length*4.0)
+        file.write(str(measure)+ "+" + str(position.numerator) + '/'+ str(position.denominator)+
+                   "\t"+str(defined_tempo_values[marking.content])+"\t"+str(beat_length*4.0)+"\n")
 file.close()
 
 
