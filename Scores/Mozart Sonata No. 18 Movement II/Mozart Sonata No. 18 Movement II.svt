@@ -9,7 +9,7 @@
     <transform
     id="vamp:score-aligner:pianoaligner:testingpowerspectrum"
     pluginVersion="1"
-    program="JSBach_No._1_in_C_Major,_BWV_846_Fugue"
+    program="Mozart Sonata No. 18 Movement II"
     stepSize="768"
     blockSize="6144"
     windowType="hanning"
@@ -18,7 +18,7 @@
     sampleRate="0">
       <parameter name="parameter" value="5"/>
     </transform>
-    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="JSBach_No._1_in_C_Major,_BWV_846_Fugue" param-parameter="5" />
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="Mozart Sonata No. 18 Movement II" param-parameter="5" />
   </derivation>
   <model id="4" name="C_scale_bothHands.wav: Chord Onsets" sampleRate="48000" start="154368" end="650496" type="sparse" dimensions="2" resolution="768" notifyOnAdd="true" dataset="3" minimum="0" maximum="7000" units="" />
   <dataset id="3" dimensions="2">
@@ -56,7 +56,7 @@
     <transform
     id="vamp:score-aligner:pianoaligner:chordonsets"
     pluginVersion="1"
-    program="JSBach_No._1_in_C_Major,_BWV_846_Fugue"
+    program="Mozart Sonata No. 18 Movement II"
     stepSize="768"
     blockSize="6144"
     windowType="hanning"
@@ -65,7 +65,7 @@
     sampleRate="0">
       <parameter name="parameter" value="5"/>
     </transform>
-    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="JSBach_No._1_in_C_Major,_BWV_846_Fugue" param-parameter="5" />
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="Mozart Sonata No. 18 Movement II" param-parameter="5" />
   </derivation>
   <playparameters mute="true" pan="0" gain="1" clipId="" model="4">
   </playparameters>
@@ -104,7 +104,7 @@
     <transform
     id="vamp:score-aligner:pianoaligner:eventtempo"
     pluginVersion="1"
-    program="JSBach_No._1_in_C_Major,_BWV_846_Fugue"
+    program="Mozart Sonata No. 18 Movement II"
     stepSize="768"
     blockSize="6144"
     windowType="hanning"
@@ -113,7 +113,7 @@
     sampleRate="0">
       <parameter name="parameter" value="5"/>
     </transform>
-    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="JSBach_No._1_in_C_Major,_BWV_846_Fugue" param-parameter="5" />
+    <plugin identifier="pianoaligner" name="Piano Aligner" description="A dummy plugin created by YJ." maker="Yucong Jiang" version="1" copyright="Copyright (2021). All Rights Reserved"  program="Mozart Sonata No. 18 Movement II" param-parameter="5" />
   </derivation>
   <playparameters mute="true" pan="0" gain="1" clipId="" model="6">
   </playparameters>

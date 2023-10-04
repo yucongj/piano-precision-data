@@ -207,18 +207,9 @@ def construct_lines_of_solo(notes, meters):
     
 ########### Input and output files
 
-#name = "C major arpeggio contrary motion"
-#name = "C major scale contrary motion"
-#name = "C major scale with both hands"
-#name = "Chopin_-_Raindrop_Prelude"
-#name = "Chord Etude"
-name = "Debussy_Prelude_Bk_1_No_3_Le_Vent_dans_la_plaine"
-#name = "JSBach_No._1_in_C_Major,_BWV_846_Fugue"
-#name = "Rachmaninov_Etude-Tableau_op._39_no._6"
-#name = "Sonata_No._18_Mvt_2_Mozart"
-#name = "Sonate_No._14_Moonlight_1st_Movement"
-#name = "TheBlues"
-#name = "TheEntertainer"
+name = "Chopin Prelude Op. 28 No. 15 (Raindrop)"
+name = "J. S. Bach Fugue in C Major, BWV 846"
+#name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
 
     
 path = "/Users/yjiang3/Documents/SV-PianoPrecision/Scores/"
