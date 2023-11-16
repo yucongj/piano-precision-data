@@ -1,5 +1,6 @@
 import music21 as m21
 from fractions import Fraction
+import re
 
 ## Created by Yucong Jiang on Feb 5, 2022
 
@@ -17,26 +18,46 @@ class Note:
                "\tduration: " + str(self.duration) + "\tmidi: " + str(self.midi)
     
 
-# not used
-def find_closest_fraction(num):
-    """
-    float -> (numerator, denominator)
-    """
-    if num == 0.0:
-        return (0, 1)
-    else:
-        numer = round(num*64)
-        denom = 64
-        divisor = gcd(numer, denom)
-        return (round(numer / divisor), round(denom / divisor))
-def gcd(p, q):
-    """
-    Returns the greatest common divisor.
-    """
-    if p % q == 0:
-        return q
-    else:
-        return gcd(q, p % q)
+class SPOSX_Event:
+    def __init__(self, elid, tick, label, fraction):
+        self.elid = elid # int
+        self.tick = tick # int
+        self.label = label # e.g., "2+1/8"
+        self.fraction = fraction # e.g., "9/8"
+    def __str__(self):
+        return "<event elid=\"" + str(self.elid) + "\" position=\"" + str(self.tick) +\
+               "\" label=\"" + self.label + "\" fraction=\"" + self.fraction + "\"/>"
+
+class SOLO_Event:
+    def __init__(self, tempo, tick, label, fraction):
+        self.tempo = tempo # default tempo is "quarter note = 120."
+        self.tick = tick # float
+        self.label = label # e.g., "2+1/8"
+        self.fraction = fraction # e.g., "9/8"
+    def __str__(self):
+        return "tempo: " + str(self.tempo) + "\ttick: " + str(self.tick) +\
+               "\tlabel: " + self.label + "\tfraction: " + self.fraction
+
+### NOT USED
+##def find_closest_fraction(num):
+##    """
+##    float -> (numerator, denominator)
+##    """
+##    if num == 0.0:
+##        return (0, 1)
+##    else:
+##        numer = round(num*64)
+##        denom = 64
+##        divisor = gcd(numer, denom)
+##        return (round(numer / divisor), round(denom / divisor))
+##def gcd(p, q):
+##    """
+##    Returns the greatest common divisor.
+##    """
+##    if p % q == 0:
+##        return q
+##    else:
+##        return gcd(q, p % q)
 
 
 def read_musicXML_file(file_path):
@@ -209,10 +230,10 @@ def construct_lines_of_solo(notes, meters):
 
 name = "Chopin Prelude Op. 28 No. 15 (Raindrop)"
 name = "J. S. Bach Fugue in C Major, BWV 846"
-#name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
-
+name = "Mozart Sonata No. 18 Movement II"
+name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
     
-path = "/Users/yjiang3/Documents/SV-PianoPrecision/Scores/"
+path = "/Users/yjiang3/Documents/PianoPrecision/Scores/"
 
 
 xml_path = path + name + "/" + name + ".mxl"
@@ -278,3 +299,72 @@ for line in lines:
     # print(line)
     file.write(str(line[0])+"\t"+str(line[1])+"\t"+str(line[2])+"\t"+str(line[3])+"\t"+str(line[4])+"\n")
 file.close()
+
+########### Create SPOSX file
+
+sposx_events = [] # from SPOS file
+with open(path + name + "/" + name + ".spos") as file:
+    for line in file.readlines():
+        if len(line) > 17 and "<event elid=" in line:
+            r = re.match(r'<event elid="(\d+)" position="(\d+)"/>', line.strip())
+            sposx_events.append(SPOSX_Event(int(r.group(1)), int(r.group(2)), "", ""))
+
+solo_events = []; seen_fractions = []
+with open(output_path) as file:
+    for line in file.readlines():
+        elements = line.split('\t')
+        if elements[1] not in seen_fractions:
+            seen_fractions.append(elements[1])
+            solo_events.append(SOLO_Event(120., -1, elements[0], elements[1]))
+# Apply any tempo changes to relevant events
+tempo_changes = []
+with open(path + name + "/" + name + ".tempo") as file:
+    for line in file.readlines():
+        tempo_changes.append(line.strip().split("\t"))
+for count in range(len(tempo_changes)-1):
+    start = tempo_changes[count]
+    end = tempo_changes[count+1]
+    for event in solo_events:
+        if eval(event.label) >= eval(start[0]) and eval(event.label) < eval(end[0]):
+            event.tempo = float(start[1]) * float(start[2])
+if len(tempo_changes) > 0:
+    last = tempo_changes[-1]
+    for event in solo_events:
+        if eval(event.label) >= eval(last[0]):
+            event.tempo = float(last[1]) * float(last[2])
+# Calculate the tick for each solo_event
+last_change = 0
+for i in range(len(solo_events)):
+    if i == 0:
+        last_tempo = solo_events[0].tempo
+        f = Fraction(solo_events[0].fraction)
+        current_tick = f.numerator * 2000. * (120. / last_tempo) / f.denominator
+        last_change_tick = current_tick
+    else:
+        current_tempo = solo_events[i].tempo
+        duration = Fraction(solo_events[i].fraction) - Fraction(solo_events[last_change].fraction)
+        current_tick = last_change_tick + duration.numerator * 2000. * (120. / last_tempo) / duration.denominator
+        if abs(current_tempo - last_tempo) > .001:
+            last_tempo = current_tempo
+            last_change = i
+            last_change_tick = current_tick
+    solo_events[i].tick = current_tick
+# Find solo events for sposx events (simply finding the closest ticks)
+last_solo_i = 0
+for e in sposx_events:
+    distance = abs(solo_events[last_solo_i].tick - e.tick)
+    while (last_solo_i+1) < len(solo_events) and abs(solo_events[last_solo_i+1].tick - e.tick) < distance:
+        last_solo_i += 1
+        distance = abs(solo_events[last_solo_i].tick - e.tick)
+    e.label = solo_events[last_solo_i].label
+    e.fraction = solo_events[last_solo_i].fraction
+# Write events to SPOSX file
+event_count = 0
+with open(path + name + "/" + name + ".spos") as file:
+    with open(path + name + "/" + name + ".sposx", 'w') as w_file:
+        for line in file.readlines():
+            if len(line) > 17 and "<event elid=" in line:
+                w_file.write(" "*8 + str(sposx_events[event_count]) + "\n")
+                event_count += 1
+            else:
+                w_file.write(line)
