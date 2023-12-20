@@ -62,7 +62,7 @@ class SOLO_Event:
 
 def read_musicXML_file(file_path):
     """
-    Returns (xml_data, a list of meters)
+    Returns xml_data
     """
     xml_data = m21.converter.parse(xml_path)
     return xml_data
@@ -204,7 +204,7 @@ def construct_lines_of_solo(notes, meters):
         #print(note)
         # ---In notes---
             # first column:
-        position = Fraction((note.beat-1) * beat_length)
+        position = Fraction( (note.beat-1) * Fraction(meter.beatDuration.quarterLength) * Fraction(1, 4) )
         first_col = str(note.measure) + "+" + str(position.numerator) + "/" + str(position.denominator)
             # second column:
         cumulative_time = calculate_cumulative_time(note.measure, position, meters)
@@ -212,7 +212,7 @@ def construct_lines_of_solo(notes, meters):
         lines.append((first_col, second_col, 90, int(note.midi), 80))
         
         # ---Out notes---
-        end = Fraction((note.beat-1) * beat_length) + Fraction(note.duration)
+        end = position + Fraction(note.duration)
         new_measure = note.measure + int(end // Fraction(meter.numerator/meter.denominator))
         new_position = end % Fraction(meter.numerator, meter.denominator)
             # first column:
@@ -227,12 +227,15 @@ def construct_lines_of_solo(notes, meters):
     
     
 ########### Input and output files
+name = "Beethoven Sonata Op. 31 No. 3 (The Hunt) Movement I"
+#name = "Beethoven Sonata Op. 110 Movement I"
+#name = "J. S. Bach Fugue in C Major, BWV 846"
+#name = "Mozart Sonata No. 18 Movement II"
+#name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
+#name = "Schubert Impromptu Op. 90 No. 1"
+#name = "Schubert Impromptu Op. 90 No. 3"
 
-name = "Chopin Prelude Op. 28 No. 15 (Raindrop)"
-name = "J. S. Bach Fugue in C Major, BWV 846"
-name = "Mozart Sonata No. 18 Movement II"
-name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
-    
+ 
 path = "/Users/yjiang3/Documents/PianoPrecision/Scores/"
 
 
@@ -270,8 +273,8 @@ for tempo in tempos:
     marking = tempo[0]
     measure = tempo[1].measureNumber
     meter = find_meter_of_measure(measure, meters)[0]
-    beat_length = Fraction(1, meter.denominator)
-    position = Fraction((marking.beat-1) * beat_length)
+    beat_length = Fraction(1, meter.denominator) 
+    position = Fraction( (marking.beat-1) * Fraction(meter.beatDuration.quarterLength) * Fraction(1, 4) )
     if type(marking) == m21.tempo.MetronomeMark:
         #if (marking.numberImplicit):
             #print("WARNING in writing .tempo: numberImplicit is True!")
@@ -343,7 +346,7 @@ for i in range(len(solo_events)):
     else:
         current_tempo = solo_events[i].tempo
         duration = Fraction(solo_events[i].fraction) - Fraction(solo_events[last_change].fraction)
-        current_tick = last_change_tick + duration.numerator * 2000. * (120. / last_tempo) / duration.denominator
+        current_tick =last_change_tick + duration.numerator * 2000. * (120. / last_tempo) / duration.denominator
         if abs(current_tempo - last_tempo) > .001:
             last_tempo = current_tempo
             last_change = i
