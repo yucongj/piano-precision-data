@@ -229,6 +229,7 @@ def construct_lines_of_solo(notes, meters):
 ########### Input and output files
 name = "Beethoven Sonata Op. 31 No. 3 (The Hunt) Movement I"
 #name = "Beethoven Sonata Op. 110 Movement I"
+name = "Chopin Nocturne Op. 27 No. 2"
 #name = "J. S. Bach Fugue in C Major, BWV 846"
 #name = "Mozart Sonata No. 18 Movement II"
 #name = "Rachmaninov Etude-Tableau, Op. 39 No. 6"
